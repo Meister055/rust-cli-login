@@ -1,8 +1,13 @@
 use std::io;
 
-fn login(list_unames: Vec<String>, list_pwords: Vec<String>) -> bool {
+fn login(list_unames: &Vec<String>, list_pwords: &Vec<String>) -> bool {
     let mut username = String::new();
     let mut password = String::new();
+
+    for i in 0..list_unames.len() {
+        println!("Username: {}", list_unames[i]);
+        println!("Password: {}", list_pwords[i]);
+    }
 
     println!("Enter your username: ");
     io::stdin()
@@ -37,14 +42,11 @@ loop {
     let input = input.trim();
     let input = input.to_lowercase();
 
-    let current_unamelist: Vec<String> = unames.clone();
-    let current_pwordlist: Vec<String> = pwords.clone();
-
     if input == "exit" {
         break;
     } else
-    if input == "login" {
-        if login(current_unamelist, current_pwordlist) {
+    if input == "login" || input == "quit"{
+        if login(&unames, &pwords) == true {
             println!("Logged in!");
         } else {
             println!("Incorrect username or password");
