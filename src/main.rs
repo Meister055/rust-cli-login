@@ -1,13 +1,8 @@
 use std::io;
 
-fn login(list_unames: &Vec<String>, list_pwords: &Vec<String>) -> bool {
+fn login(credentials: &Credentials) -> bool {
     let mut username = String::new();
     let mut password = String::new();
-
-    for i in 0..list_unames.len() {
-        println!("Username: {}", list_unames[i]);
-        println!("Password: {}", list_pwords[i]);
-    }
 
     println!("Enter your username: ");
     io::stdin()
@@ -19,19 +14,28 @@ fn login(list_unames: &Vec<String>, list_pwords: &Vec<String>) -> bool {
         .read_line(&mut password)
         .expect("Failed to read line");
 
-    if list_unames.contains(&username) && list_pwords.contains(&password) {
-        return true;
-    } else {
-        return false;
+    username = username.trim().to_string();
+    password = password.trim().to_string();
+
+    if let Some(index) = credentials.unames.iter().position(|x| *x == username) {
+        if credentials.pwords[index] == password {
+            return true;
+        }
     }
+    return false;
+
+}
+
+struct Credentials {
+    unames: Vec<String>,
+    pwords: Vec<String>,
 }
 
 fn main() {
-    let mut unames: Vec<String> = Vec::new();
-    let mut pwords: Vec<String> = Vec::new();
-
-    unames.push("admin".to_string());
-    pwords.push("password".to_string());
+    let credentials = Credentials {
+        unames: vec!["admin".to_string(), "user".to_string()],
+        pwords: vec!["password".to_string(), "password".to_string()],
+    };
 
     let mut input: String = String::new();
 
@@ -42,11 +46,11 @@ loop {
     let input = input.trim();
     let input = input.to_lowercase();
 
-    if input == "exit" {
+    if input == "exit"  || input == "quit" || input == "stop" {
         break;
     } else
-    if input == "login" || input == "quit"{
-        if login(&unames, &pwords) == true {
+    if input == "login"{
+        if login(&credentials) {
             println!("Logged in!");
         } else {
             println!("Incorrect username or password");
