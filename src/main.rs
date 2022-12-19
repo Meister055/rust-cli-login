@@ -94,6 +94,10 @@ struct Credentials {
 }
 
 fn main() {
+    const COMMANDS: &str = "login, signup, logout, exit, help";
+
+    let mut logged_in: bool = false;
+
     let mut credentials = Credentials {
         unames: vec!["admin".to_string(), "user".to_string()],
         pwords: vec!["password".to_string(), "password".to_string()],
@@ -110,13 +114,30 @@ fn main() {
         if input == "exit" || input == "quit" || input == "stop" {
             break;
         } else if input == "login" {
-            if login(&credentials) {
+            logged_in = login(&credentials); 
+            if logged_in {
                 println!("Logged in!");
             } else {
-                println!("Incorrect username or password");
+                println!("Incorrect login, or you are already logged in.");
             }
         } else if input == "signup" {
             new_user(&mut credentials);
+        } else if input == "help" {
+            println!("Commands: {}", &COMMANDS); 
+        } else if input == "logout" {
+            if logged_in {
+            logged_in = false;
+            println!("Logged out");
+            } else {
+                println!("You are not logged in.");
+            }
+        } else if input == "secret" {
+            if logged_in {
+                println!("The secret is: 42");
+            }
+            else {
+                println!("You are not logged in.");
+            }
         } else {
             println!("Invalid command");
         }
