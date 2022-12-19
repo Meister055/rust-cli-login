@@ -103,6 +103,8 @@ fn main() {
         pwords: vec!["password".to_string(), "password".to_string()],
     };
 
+    println!("Meister Console (v1.0.0) (type 'help' for commands)\nCopyright (C) 2022 Joshua Siefert. All rights reserved.");
+
     loop {
         let mut input: String = String::new();
         io::stdin()
