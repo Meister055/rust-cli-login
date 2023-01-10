@@ -1,5 +1,5 @@
-use std::io;
 use passwords::PasswordGenerator;
+use std::io;
 
 fn login(credentials: &Credentials) -> bool {
     let mut username = String::new();
@@ -24,7 +24,6 @@ fn login(credentials: &Credentials) -> bool {
         }
     }
     return false;
-
 }
 
 fn new_user(credentials: &mut Credentials) {
@@ -72,8 +71,7 @@ fn new_user(credentials: &mut Credentials) {
                 credentials.unames.push(username);
                 credentials.pwords.push(password);
                 break;
-            }
-            else if input == "n" {
+            } else if input == "n" {
                 println!("Choose a password: ");
                 io::stdin()
                     .read_line(&mut password)
@@ -94,7 +92,11 @@ struct Credentials {
 }
 
 fn main() {
-    const COMMANDS: &str = "login, signup, logout, exit, help";
+    const COMMANDS: &str = "login: Logs in a user.
+    signup: Creates a new user.
+    logout: Signs out the current user.
+    exit: Kills the current window.
+    help: Shows this command.";
 
     let mut logged_in: bool = false;
 
@@ -107,16 +109,14 @@ fn main() {
 
     loop {
         let mut input: String = String::new();
-        io::stdin()
-            .read_line(&mut input)
-            .expect("Input failed");
+        io::stdin().read_line(&mut input).expect("Input failed");
         let input = input.trim();
         let input = input.to_lowercase();
 
         if input == "exit" || input == "quit" || input == "stop" {
             break;
         } else if input == "login" {
-            logged_in = login(&credentials); 
+            logged_in = login(&credentials);
             if logged_in {
                 println!("Logged in!");
             } else {
@@ -125,19 +125,18 @@ fn main() {
         } else if input == "signup" {
             new_user(&mut credentials);
         } else if input == "help" {
-            println!("Commands: {}", &COMMANDS); 
+            println!("Commands:\n {}", &COMMANDS);
         } else if input == "logout" {
             if logged_in {
-            logged_in = false;
-            println!("Logged out");
+                logged_in = false;
+                println!("Logged out");
             } else {
                 println!("You are not logged in.");
             }
         } else if input == "secret" {
             if logged_in {
                 println!("The secret is: 42");
-            }
-            else {
+            } else {
                 println!("You are not logged in.");
             }
         } else {
